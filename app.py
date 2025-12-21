@@ -37,11 +37,11 @@ class TasksViewer(QMainWindow):
             # 如果是正常运行状态，则基路径是脚本所在目录
             base_path = os.path.dirname(os.path.abspath(__file__))
 
-        persistent_dir = os.path.join(base_path, "app_data", "ticktick_profile")
+        persistent_dir = os.path.join(base_path, "app_data", "google_profile")
         if not os.path.exists(persistent_dir):
             os.makedirs(persistent_dir, exist_ok=True)
 
-        self.profile = QWebEngineProfile("ticktick_storage", self)
+        self.profile = QWebEngineProfile("google_storage", self)
         self.profile.setPersistentCookiesPolicy(QWebEngineProfile.PersistentCookiesPolicy.AllowPersistentCookies)
         self.profile.setPersistentStoragePath(persistent_dir)
         self.profile.setHttpCacheType(QWebEngineProfile.HttpCacheType.DiskHttpCache)
