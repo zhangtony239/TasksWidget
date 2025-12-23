@@ -66,6 +66,9 @@ class TasksViewer(QMainWindow):
                 });
             """
             self.browser.page().runJavaScript(script)
+        else:
+            # 加载失败（如断网），5秒后尝试重新加载
+            QTimer.singleShot(5000, self.browser.reload)
 
     def set_always_on_bottom(self):
         hwnd = int(self.winId())
