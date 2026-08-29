@@ -1,0 +1,19 @@
+[project]
+name = "taskswidget"
+version = "0.1.0"
+description = "Add your description here"
+authors = [
+    { name = "zhangtony239", email = "zhangtony239@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "pyside6>=6.11.2",
+    "pywin32>=312",
+]
+
+[project.scripts]
+taskswidget = "taskswidget:main"
+
+[build-system]
+requires = ["uv_build>=0.12.5,<0.13.0"]
+build-backend = "uv_build"

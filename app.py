@@ -1,18 +1,20 @@
-import sys
 import os
-from PySide6.QtWidgets import QApplication, QMainWindow
-from PySide6.QtCore import Qt, QTimer, QUrl
-from PySide6.QtWebEngineWidgets import QWebEngineView
-from PySide6.QtWebEngineCore import QWebEngineProfile, QWebEngineSettings
-import win32gui
+import sys
+
 import win32con
+import win32gui
+from PySide6.QtCore import Qt, QTimer, QUrl
+from PySide6.QtWebEngineCore import QWebEngineProfile, QWebEngineSettings
+from PySide6.QtWebEngineWidgets import QWebEngineView
+from PySide6.QtWidgets import QApplication, QMainWindow
+
 
 class CustomWebEngineView(QWebEngineView):
     def contextMenuEvent(self, event):
         # 禁用右键菜单
         pass
 
-class TasksViewer(QMainWindow):
+class CalendarViewer(QMainWindow):
     def __init__(self):
         super().__init__()
 
@@ -24,7 +26,7 @@ class TasksViewer(QMainWindow):
         )
         self.setFixedSize(600, 640)  # 可改为你需要的尺寸
         self.move(80, 90) # 移动到屏幕左上角
-        self.setWindowTitle("Google Tasks")
+        self.setWindowTitle("Google Calendar")
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground, True)
         self.set_always_on_bottom() # 修正方法调用
 
@@ -46,10 +48,10 @@ class TasksViewer(QMainWindow):
         self.profile.setPersistentStoragePath(persistent_dir)
         self.profile.setHttpCacheType(QWebEngineProfile.HttpCacheType.DiskHttpCache)
 
-        # 加载Google Tasks网页
+        # 加载Google Calendar网页
         self.browser = CustomWebEngineView(self.profile, self) # 使用自定义 profile
         self.browser.page().settings().setAttribute(QWebEngineSettings.WebAttribute.ShowScrollBars, False)
-        self.browser.setUrl(QUrl("https://tasks.google.com/embed/?origin=https://calendar.google.com"))
+        self.browser.setUrl(QUrl("https://calendar.google.com"))
         self.browser.setGeometry(0, 0, 650, 640) # WebEngineView相对于QMainWindow的位置
         self.browser.loadFinished.connect(self.apply_multiply_effect)
 
@@ -96,6 +98,6 @@ class TasksViewer(QMainWindow):
 os.environ["QTWEBENGINE_CHROMIUM_FLAGS"] = "--disable-frame-rate-limit"
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    viewer = TasksViewer()
+    viewer = CalendarViewer()
     viewer.show()
     sys.exit(app.exec())
