@@ -25,3 +25,6 @@ fullscreen.dist/
 # IDE settings
 .vscode/
 .idea/
+
+# debug dir
+app_data/

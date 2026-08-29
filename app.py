@@ -14,6 +14,10 @@ class CustomWebEngineView(QWebEngineView):
         # 禁用右键菜单
         pass
 
+    def createWindow(self, window_type):
+        #让网页请求的新窗口在当前视图中打开。
+        return self
+
 class CalendarViewer(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -51,14 +55,28 @@ class CalendarViewer(QMainWindow):
         # 加载Google Calendar网页
         self.browser = CustomWebEngineView(self.profile, self) # 使用自定义 profile
         self.browser.page().settings().setAttribute(QWebEngineSettings.WebAttribute.ShowScrollBars, False)
-        self.browser.setUrl(QUrl("https://calendar.google.com"))
-        self.browser.setGeometry(0, 0, 650, 640) # WebEngineView相对于QMainWindow的位置
+        self.browser.setUrl(QUrl("https://calendar.google.com/calendar/u/0/r"))
+        self.browser.setGeometry(0, 0, 673, 670) # WebEngineView相对于QMainWindow的位置
         self.browser.loadFinished.connect(self.apply_multiply_effect)
 
 
     def apply_multiply_effect(self, ok):
         if ok:
             script = """
+                // 强制覆盖 XPath /html/body/div[2] 对应元素的背景色
+                const style = document.createElement('style');
+                style.id = 'tasks-widget-background-override';
+                style.textContent = `
+                    html > body > div:nth-of-type(2) {
+                        background-color: #FFFFFF !important;
+                    }
+
+                    html > body > div:nth-of-type(2) > div > div:nth-child(1) > header > div:nth-child(2) > div:nth-child(2) > div:nth-child(1) > div > div > div > div:nth-child(2) {
+                        display: none !important;
+                    }
+                `;
+                document.head.appendChild(style);
+
                 // Add event listener to prevent Tab key default action
                 document.addEventListener('keydown', function(event) {
                     // Check for Tab key (event.key === 'Tab' or event.keyCode === 9 for older browsers)
